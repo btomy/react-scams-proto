@@ -20,7 +20,7 @@ class MasterForm extends Component {
     };
 
     // Bind the submission to handleChange()
-    this.handleChange = this.handleChange.bind(this);
+    
     this.handleSubmit = this.handleSubmit.bind(this)
 
     // Bind new functions for next and previous
@@ -29,7 +29,7 @@ class MasterForm extends Component {
   }
 
   // Use the submitted data to set the state
-  handleChange(event) {
+  handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({
       [name]: value

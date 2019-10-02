@@ -6,7 +6,7 @@ import MasterForm from "./MasterForm";
 class App extends React.Component {
   render() {
     return (
-      <div className="constrained mh-auto ph-6 flex flex-wrap gutter-ns mt-7">
+      <div className="flex flex-column w-full w-two-thirds-ns ph-2-ns mb-4 mb-0-ns">
         <MasterForm />
       </div>
     )

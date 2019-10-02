@@ -1,13 +1,16 @@
 .step-icon{
-    background: lightgray;
-    border-radius: 15px;
-    color: black;
-    width: 20px;
-    height: 20px;
+    background: #dfdfdf;
+    border-radius: 30px;
+    color: #004b88;
+    font-weight: bold;
+    width: 35px;
+    height: 35px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .step-icon.completed{
-    background: green;
-    color: white;
+    background:#5cc0b5;
 }

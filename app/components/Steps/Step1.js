@@ -7,21 +7,29 @@ const Step1 = props => {
 
   return (
     <div className="rich-content">
-      <h3>How can we reach you?</h3>
+      <h3>Where did you come across the possible scam? </h3>
+
       <fieldset className="b-none p-0 m-0 mb-5">
-        <div className="text-input">
-          <label className="block bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            type="text"
-            name="email"
-            id="email"
-            placeholder="Enter your Email"
-            value={props.email} // Prop: The email input data
-            onChange={props.handleChange} // Prop: Puts data into the state
-          />
-        </div>
+        {props.scams &&
+          props.scams.map( (item,id) => {
+            return (
+              <div key={id} className="block mv-2">
+                <div className="checkbox">
+                  <input
+                    value={item}
+                    id={item}
+                    name={item}
+                    checked={item === props.selectedItem}
+                    type="checkbox"
+                    onChange={props.handleChange}
+                  />
+                  <label htmlFor={item} className="ml-2 lh-2 semi-bold pointer">
+                    {item}
+                  </label>
+                </div>
+              </div>
+            );
+          })}
       </fieldset>
     </div>
   );

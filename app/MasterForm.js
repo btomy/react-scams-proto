@@ -28,24 +28,19 @@ class MasterForm extends Component {
   constructor(props) {
     super(props);
 
-    // Set the intiial input values
     this.state = {
       currentStep: 1,
-      email: "",
-      username: "",
-      password: ""
+      selectedItem: "Email"
     };
   }
 
-  // Use the submitted data to set the state
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      selectedItem: value
     });
   };
 
-  // Trigger an alert on form submission
   handleSubmit = event => {
     event.preventDefault();
     const { email, username, password } = this.state;
@@ -55,8 +50,6 @@ class MasterForm extends Component {
       Password: ${password}`);
   };
 
-  // Test current step with ternary
-  // _next and _previous functions will be called on button click
   _next = () => {
     let currentStep = this.state.currentStep;
 
@@ -76,7 +69,6 @@ class MasterForm extends Component {
     });
   };
 
-  // The "next" and "previous" button functions
   get previousButton() {
     let currentStep = this.state.currentStep;
 
@@ -100,7 +92,6 @@ class MasterForm extends Component {
       );
     }
 
-    // ...else return nothing
     return null;
   }
 
@@ -127,7 +118,6 @@ class MasterForm extends Component {
         </Button>
       );
     }
-    // ...else render nothing
     return null;
   }
 
@@ -142,54 +132,61 @@ class MasterForm extends Component {
         </Button>
       );
     }
-    // ...else render nothing
     return null;
   }
 
   render() {
+
+    const {selectedItem} = this.state;
+    const typeOfScams = ["Email", "Phone", "Social media", "Website"];
+
     return (
-      <StepperProvider stage={this.state.currentStep}>
-        <Stepper>
-          <form className="flex flex-column w-full w-two-thirds-ns ph-2-ns mb-4 mb-0-ns">
-            <div className="progress-bar">
-              <Stepper.Progress>
-                <Stepper.Stage num={1} />
-                <Stepper.Stage num={2} />
-                <Stepper.Stage num={3} />
-                <Stepper.Stage num={4} />
-                <Stepper.Stage num={5} />
-              </Stepper.Progress>
-            </div>
-            <div className="steps-container">
-              <Step1
-                currentStep={this.state.currentStep}
-                handleChange={this.handleChange}
-                email={this.state.email}
-              />
-              <Step2
-                currentStep={this.state.currentStep}
-                handleChange={this.handleChange}
-                email={this.state.username}
-              />
-              <Step3
-                currentStep={this.state.currentStep}
-                handleChange={this.handleChange}
-                email={this.state.password}
-              />
-              <Step4
-                currentStep={this.state.currentStep}
-                handleChange={this.handleChange}
-                email={this.state.password}
-              />
-            </div>
-            <div className="button-group flex">
-              {this.previousButton}
-              {this.nextButton}
-              {this.submitButton}
-            </div>
-          </form>
-        </Stepper>
-      </StepperProvider>
+      <div className="rich-content line-limit-width">
+        <h1>Scams Tool</h1>
+        <StepperProvider stage={this.state.currentStep}>
+          <Stepper>
+            <form>
+              <div className="progress-bar">
+                <Stepper.Progress>
+                  <Stepper.Stage num={1} />
+                  <Stepper.Stage num={2} />
+                  <Stepper.Stage num={3} />
+                  <Stepper.Stage num={4} />
+                  <Stepper.Stage num={5} />
+                </Stepper.Progress>
+              </div>
+              <div className="steps-container">
+                <Step1
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                  scams={typeOfScams}
+                  selectedItem={selectedItem}
+                />
+                <Step2
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                  
+                />
+                <Step3
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                  
+                />
+                <Step4
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                  
+                />
+              </div>
+              <div className="button-group flex">
+                {this.previousButton}
+                {this.nextButton}
+                {this.submitButton}
+              </div>
+            </form>
+          </Stepper>
+        </StepperProvider>
+      </div>
     );
   }
 }

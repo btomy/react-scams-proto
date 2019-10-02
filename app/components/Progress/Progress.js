@@ -25,6 +25,6 @@ const renderIcon = (stage, num) => {
 
 export default class Progress extends Component {
   render() {
-    return <ul className="flex flex-row list-style-none justify-between">{this.props.children}</ul>;
+    return <ul className="flex flex-row list-style-none justify-between p-0">{this.props.children}</ul>;
   }
 }

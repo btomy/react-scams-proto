@@ -5,8 +5,6 @@ import Step2 from "./components/Step2";
 import Step3 from "./components/Step3";
 import Step4 from "./components/Step4";
 
-import MultiStepProgressBar from "./MultiStepProgressBar";
-
 class MasterForm extends Component {
   constructor(props) {
     super(props);
@@ -133,7 +131,7 @@ class MasterForm extends Component {
           className="flex flex-column w-full w-two-thirds-ns ph-2-ns mb-4 mb-0-ns"
         >
           <div className="progress-bar">
-            <MultiStepProgressBar currentStep={this.state.currentStep} />
+            
           </div>
           <div className="steps-container">
             <Step1

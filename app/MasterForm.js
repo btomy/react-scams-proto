@@ -5,6 +5,8 @@ import Step2 from "./components/Step2";
 import Step3 from "./components/Step3";
 import Step4 from "./components/Step4";
 
+import Button from './components/Button/Button';
+
 class MasterForm extends Component {
   constructor(props) {
     super(props);
@@ -64,7 +66,7 @@ class MasterForm extends Component {
     // If the current step is not 1, then render the "previous" button
     if (currentStep !== 1) {
       return (
-        <button type="button" className="button-secondary mr-2" onClick={this._prev}>
+        <Button className="button-secondary mr-2" click={this._prev}>
           <svg
             className="mr-2"
             width="11"
@@ -77,7 +79,7 @@ class MasterForm extends Component {
             />
           </svg>
           Previous
-        </button>
+        </Button>
       );
     }
 
@@ -90,7 +92,7 @@ class MasterForm extends Component {
     // If the current step is not 3, then render the "next" button
     if (currentStep < 5) {
       return (
-        <button type="button" className="button" onClick={this._next}>
+        <Button className="button" click={this._next}>
           Next
           <svg
             className="ml-2"
@@ -105,7 +107,7 @@ class MasterForm extends Component {
               fill="white"
             />
           </svg>
-        </button>
+        </Button>
       );
     }
     // ...else render nothing
@@ -117,7 +119,7 @@ class MasterForm extends Component {
 
     // If the current step is the last step, then render the "submit" button
     if (currentStep > 4) {
-      return <button className="button">Submit</button>;
+      return <Button click={this.handleSubmit} className="button">Submit</Button>;
     }
     // ...else render nothing
     return null;

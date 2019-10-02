@@ -30,15 +30,23 @@ class MasterForm extends Component {
 
     this.state = {
       currentStep: 1,
-      selectedItem: "Email"
+      selectedItem: "Email",
+      selected: "No"
     };
   }
 
   handleChange = event => {
     const { name, value } = event.target;
-    this.setState({
-      selectedItem: value
-    });
+    if (name === "Yes" || name === "No") {
+      this.setState({
+        selected: value
+      });
+    } else {
+      this.setState({
+        selectedItem: value
+      });
+    }
+    
   };
 
   handleSubmit = event => {
@@ -137,7 +145,7 @@ class MasterForm extends Component {
 
   render() {
 
-    const {selectedItem} = this.state;
+    const {selectedItem,selected} = this.state;
     const typeOfScams = ["Email", "Phone", "Social media", "Website"];
 
     return (
@@ -165,7 +173,7 @@ class MasterForm extends Component {
                 <Step2
                   currentStep={this.state.currentStep}
                   handleChange={this.handleChange}
-                  
+                  selected={selected}
                 />
                 <Step3
                   currentStep={this.state.currentStep}

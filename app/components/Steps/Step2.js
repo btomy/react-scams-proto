@@ -7,22 +7,44 @@ const Step2 = props => {
 
   return (
     <div className="rich-content">
-      <h3>Step2</h3>
+      <h3>Who you’ve been in contact with </h3>
+      <h4>
+        Do you have any information on the identity of the organisation or
+        individual?
+      </h4>
       <fieldset className="b-none p-0 m-0 mb-5">
-        <div className="text-input">
-          <label className="block bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            type="text"
-            name="email"
-            id="email"
-            placeholder="Enter your Email"
-            value={props.email} // Prop: The email input data
-            onChange={props.handleChange} // Prop: Puts data into the state
-          />
+        <div className="block mv-2">
+          <div className="checkbox">
+            <input
+              value="Yes"
+              id="Yes"
+              name="Yes"
+              checked={props.selected === "Yes"}
+              type="checkbox"
+              onChange={props.handleChange}
+            />
+            <label htmlFor="Yes" className="ml-2 lh-2 semi-bold pointer">
+              Yes
+            </label>
+          </div>
+        </div>
+        <div className="block mv-2">
+          <div className="checkbox">
+            <input
+              value="No"
+              id="No"
+              name="No"
+              checked={props.selected === "No"}
+              type="checkbox"
+              onChange={props.handleChange}
+            />
+            <label htmlFor="No" className="ml-2 lh-2 semi-bold pointer">
+              No
+            </label>
+          </div>
         </div>
       </fieldset>
+      
     </div>
   );
 };

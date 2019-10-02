@@ -1,0 +1,13 @@
+.step-icon{
+    background: lightgray;
+    border-radius: 15px;
+    color: black;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}
+
+.step-icon.completed{
+    background: green;
+    color: white;
+}

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-import Step1 from "./components/Step1";
-import Step2 from "./components/Step2";
-import Step3 from "./components/Step3";
-import Step4 from "./components/Step4";
+import Step1 from "./components/Steps/Step1";
+import Step2 from "./components/Steps/Step2";
+import Step3 from "./components/Steps/Step3";
+import Step4 from "./components/Steps/Step4";
 
 import Stepper from "./Stepper";
 import Button from "./components/Button/Button";
@@ -150,44 +150,44 @@ class MasterForm extends Component {
     return (
       <StepperProvider stage={this.state.currentStep}>
         <Stepper>
-          <Stepper.Progress>
-            <Stepper.Stage num={1} />
-            <Stepper.Stage num={2} />
-            <Stepper.Stage num={3} />
-            <Stepper.Stage num={4} />
-          </Stepper.Progress>
-            <form
-              className="flex flex-column w-full w-two-thirds-ns ph-2-ns mb-4 mb-0-ns"
-            >
-              <div className="progress-bar"></div>
-              <div className="steps-container">
-                <Step1
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  email={this.state.email}
-                />
-                <Step2
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  email={this.state.username}
-                />
-                <Step3
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  email={this.state.password}
-                />
-                <Step4
-                  currentStep={this.state.currentStep}
-                  handleChange={this.handleChange}
-                  email={this.state.password}
-                />
-              </div>
-              <div className="button-group flex">
-                {this.previousButton}
-                {this.nextButton}
-                {this.submitButton}
-              </div>
-            </form>
+          <form className="flex flex-column w-full w-two-thirds-ns ph-2-ns mb-4 mb-0-ns">
+            <div className="progress-bar">
+              <Stepper.Progress>
+                <Stepper.Stage num={1} />
+                <Stepper.Stage num={2} />
+                <Stepper.Stage num={3} />
+                <Stepper.Stage num={4} />
+                <Stepper.Stage num={5} />
+              </Stepper.Progress>
+            </div>
+            <div className="steps-container">
+              <Step1
+                currentStep={this.state.currentStep}
+                handleChange={this.handleChange}
+                email={this.state.email}
+              />
+              <Step2
+                currentStep={this.state.currentStep}
+                handleChange={this.handleChange}
+                email={this.state.username}
+              />
+              <Step3
+                currentStep={this.state.currentStep}
+                handleChange={this.handleChange}
+                email={this.state.password}
+              />
+              <Step4
+                currentStep={this.state.currentStep}
+                handleChange={this.handleChange}
+                email={this.state.password}
+              />
+            </div>
+            <div className="button-group flex">
+              {this.previousButton}
+              {this.nextButton}
+              {this.submitButton}
+            </div>
+          </form>
         </Stepper>
       </StepperProvider>
     );

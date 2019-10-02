@@ -7,7 +7,7 @@ class Stepper extends Component {
   static Stage = Stage;
 
   render() {
-    return <div>{this.props.children}</div>;
+    return <React.Fragment>{this.props.children}</React.Fragment>;
   }
 }
 

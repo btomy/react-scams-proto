@@ -5,7 +5,24 @@ import Step2 from "./components/Step2";
 import Step3 from "./components/Step3";
 import Step4 from "./components/Step4";
 
-import Button from './components/Button/Button';
+import Stepper from "./Stepper";
+import Button from "./components/Button/Button";
+
+export const StepperContext = React.createContext();
+
+class StepperProvider extends Component {
+  render() {
+    return (
+      <StepperContext.Provider
+        value={{
+          stage: this.props.stage
+        }}
+      >
+        {this.props.children}
+      </StepperContext.Provider>
+    );
+  }
+}
 
 class MasterForm extends Component {
   constructor(props) {
@@ -119,7 +136,11 @@ class MasterForm extends Component {
 
     // If the current step is the last step, then render the "submit" button
     if (currentStep > 4) {
-      return <Button click={this.handleSubmit} className="button">Submit</Button>;
+      return (
+        <Button click={this.handleSubmit} className="button">
+          Submit
+        </Button>
+      );
     }
     // ...else render nothing
     return null;
@@ -127,43 +148,48 @@ class MasterForm extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <form
-          onSubmit={this.handleSubmit}
-          className="flex flex-column w-full w-two-thirds-ns ph-2-ns mb-4 mb-0-ns"
-        >
-          <div className="progress-bar">
-            
-          </div>
-          <div className="steps-container">
-            <Step1
-              currentStep={this.state.currentStep}
-              handleChange={this.handleChange}
-              email={this.state.email}
-            />
-            <Step2
-              currentStep={this.state.currentStep}
-              handleChange={this.handleChange}
-              email={this.state.username}
-            />
-            <Step3
-              currentStep={this.state.currentStep}
-              handleChange={this.handleChange}
-              email={this.state.password}
-            />
-            <Step4
-              currentStep={this.state.currentStep}
-              handleChange={this.handleChange}
-              email={this.state.password}
-            />
-          </div>
-          <div className="button-group flex">
-            {this.previousButton}
-            {this.nextButton}
-            {this.submitButton}
-          </div>
-        </form>
-      </React.Fragment>
+      <StepperProvider stage={this.state.currentStep}>
+        <Stepper>
+          <Stepper.Progress>
+            <Stepper.Stage num={1} />
+            <Stepper.Stage num={2} />
+            <Stepper.Stage num={3} />
+            <Stepper.Stage num={4} />
+          </Stepper.Progress>
+            <form
+              className="flex flex-column w-full w-two-thirds-ns ph-2-ns mb-4 mb-0-ns"
+            >
+              <div className="progress-bar"></div>
+              <div className="steps-container">
+                <Step1
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                  email={this.state.email}
+                />
+                <Step2
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                  email={this.state.username}
+                />
+                <Step3
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                  email={this.state.password}
+                />
+                <Step4
+                  currentStep={this.state.currentStep}
+                  handleChange={this.handleChange}
+                  email={this.state.password}
+                />
+              </div>
+              <div className="button-group flex">
+                {this.previousButton}
+                {this.nextButton}
+                {this.submitButton}
+              </div>
+            </form>
+        </Stepper>
+      </StepperProvider>
     );
   }
 }

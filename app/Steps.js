@@ -16,7 +16,7 @@ class Steps extends Component{
     render() {
         const {data} = this.state
         console.log(data);
-        
+         
         return(
             <React.Fragment>
                 <h1>{data.Title}</h1>

@@ -5,24 +5,7 @@ import Step2 from "./components/Steps/Step2";
 import Step3 from "./components/Steps/Step3";
 import Step4 from "./components/Steps/Step4";
 
-import Stepper from "./Stepper";
 import Button from "./components/Button/Button";
-
-export const StepperContext = React.createContext();
-
-class StepperProvider extends Component {
-  render() {
-    return (
-      <StepperContext.Provider
-        value={{
-          stage: this.props.stage
-        }}
-      >
-        {this.props.children}
-      </StepperContext.Provider>
-    );
-  }
-}
 
 class MasterForm extends Component {
   constructor(props) {
@@ -151,18 +134,7 @@ class MasterForm extends Component {
     return (
       <div className="rich-content line-limit-width">
         <h1>Scams Tool</h1>
-        <StepperProvider stage={this.state.currentStep}>
-          <Stepper>
             <form>
-              <div className="progress-bar">
-                <Stepper.Progress>
-                  <Stepper.Stage num={1} />
-                  <Stepper.Stage num={2} />
-                  <Stepper.Stage num={3} />
-                  <Stepper.Stage num={4} />
-                  <Stepper.Stage num={5} />
-                </Stepper.Progress>
-              </div>
               <div className="steps-container">
                 <Step1
                   currentStep={this.state.currentStep}
@@ -192,8 +164,6 @@ class MasterForm extends Component {
                 {this.submitButton}
               </div>
             </form>
-          </Stepper>
-        </StepperProvider>
       </div>
     );
   }

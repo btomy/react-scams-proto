@@ -31,13 +31,13 @@ class MasterForm extends Component {
     this.state = {
       currentStep: 1,
       selectedItem: "Email",
-      selected: "No"
+      selected: "no"
     };
   }
 
   handleChange = event => {
     const { name, value } = event.target;
-    if (name === "Yes" || name === "No") {
+    if (name === "yes" || name === "no") {
       this.setState({
         selected: value
       });

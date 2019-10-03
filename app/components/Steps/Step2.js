@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Step2 = props => {
   if (props.currentStep !== 2) {
@@ -14,37 +14,36 @@ const Step2 = props => {
       </h4>
       <fieldset className="b-none p-0 m-0 mb-5">
         <div className="block mv-2">
-          <div className="checkbox">
+          <div className="radio">
             <input
-              value="Yes"
-              id="Yes"
-              name="Yes"
-              checked={props.selected === "Yes"}
-              type="checkbox"
+              value="yes"
+              id="yes"
+              name="yes"
+              type="radio"
+              checked={props.selected === "yes"}
               onChange={props.handleChange}
             />
-            <label htmlFor="Yes" className="ml-2 lh-2 semi-bold pointer">
+            <label htmlFor="yes" className="ml-2 lh-2 semi-bold">
               Yes
             </label>
           </div>
         </div>
         <div className="block mv-2">
-          <div className="checkbox">
+          <div className="radio">
             <input
-              value="No"
-              id="No"
-              name="No"
-              checked={props.selected === "No"}
-              type="checkbox"
+              value="no"
+              id="no"
+              name="no"
+              type="radio"
+              checked={props.selected === "no"}
               onChange={props.handleChange}
             />
-            <label htmlFor="No" className="ml-2 lh-2 semi-bold pointer">
+            <label htmlFor="no" className="ml-2 lh-2 semi-bold">
               No
             </label>
           </div>
         </div>
       </fieldset>
-      
     </div>
   );
 };

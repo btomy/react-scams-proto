@@ -40,24 +40,25 @@ class Steps extends Component {
 
         <StepOne
           currentStep={currentStep}
-          questions={FirstQuestion}
+          question={FirstQuestion}
           results={FirstQuestionAnswers[0]}
           selected={selected}
           handleChange={this._handleChange}
         />
+        
       </React.Fragment>
     );
   }
 }
 export default Steps;
 
-const StepOne = ({currentStep,questions,results,selected,handleChange}) => {
+const StepOne = ({currentStep,question,results,selected,handleChange}) => {
   if (currentStep !== 1) {
     return null;
   }
   return (
     <div className="rich-content">
-      <QuestionBlock questions={questions} />
+      <QuestionBlock question={question} />
 
       <fieldset className="p-0 m-0">
         <Answers
@@ -70,8 +71,8 @@ const StepOne = ({currentStep,questions,results,selected,handleChange}) => {
   );
 };
 
-const QuestionBlock = ({ questions }) => {
-  const QuestionBlock = questions.map(question => question.QuestionText);
+const QuestionBlock = ({ question }) => {
+  const QuestionBlock = question.map(question => question.QuestionText);
   return <h3>{QuestionBlock}</h3>;
 };
 

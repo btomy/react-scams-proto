@@ -4,6 +4,7 @@ import data from "./scams.json";
 import FormRadioCheck from "./components/FormRadioCheck/component";
 import FormLabel from "./components/FormLabel/component";
 import Step1 from "./components/Steps/Step1.js";
+import ButtonContainer from "./components/ButtonContainer/ButtonContainer";
 
 class Steps extends Component {
   constructor(props) {
@@ -22,12 +23,31 @@ class Steps extends Component {
     });
   };
 
+  _next = (e) => {
+    let currentStep = this.state.currentStep;
+    currentStep = currentStep >= 5 ? 3 : currentStep + 1;
+    this.setState({
+      currentStep: currentStep
+    });
+  };
+
+  _prev = (e) => {
+    let currentStep = this.state.currentStep;
+    currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+    this.setState({
+      currentStep: currentStep
+    });
+  };
+
   render() {
     const { data, selected, currentStep } = this.state;
+    console.log(this.state);
     const FirstQuestionId = data.StartingQuestionId;
-    const FirstQuestion = data ? data["Questions"].filter(item => {
+    const FirstQuestion = data
+      ? data["Questions"].filter(item => {
           return item.Id === FirstQuestionId;
-    }) : null;
+        })
+      : null;
 
     const FirstQuestionAnswers = FirstQuestion.map(question => {
       return question.Answers.filter(answer => answer);
@@ -38,36 +58,45 @@ class Steps extends Component {
         <h1>{data.Title}</h1>
         <div dangerouslySetInnerHTML={{ __html: data.Introduction }}></div>
 
-        <StepOne
-          currentStep={currentStep}
-          question={FirstQuestion}
-          results={FirstQuestionAnswers[0]}
-          selected={selected}
-          handleChange={this._handleChange}
-        />
-        
+        <form action="" className="rich-content line-limit-width">
+          
+          <StepOne
+            currentStep={currentStep}
+            question={FirstQuestion}
+            results={FirstQuestionAnswers[0]}
+            selected={selected}
+            handleChange={this._handleChange}
+          />
+
+          <div className="button-group flex pv-4">
+            <ButtonContainer 
+                currentStep={currentStep}
+                next={this._next}
+                previous={this._prev} />
+          </div>
+        </form>
       </React.Fragment>
     );
   }
 }
 export default Steps;
 
-const StepOne = ({currentStep,question,results,selected,handleChange}) => {
+const StepOne = ({currentStep,question,results,selected,handleChange})=> {
   if (currentStep !== 1) {
     return null;
   }
   return (
-    <div className="rich-content">
+    <React.Fragment>
       <QuestionBlock question={question} />
 
-      <fieldset className="p-0 m-0">
+      <fieldset className="b-none p-0 m-0 mb-4">
         <Answers
           results={results}
           selected={selected}
           handleChange={handleChange}
         />
       </fieldset>
-    </div>
+    </React.Fragment>
   );
 };
 

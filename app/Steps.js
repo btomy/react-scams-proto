@@ -10,6 +10,7 @@ class Steps extends Component{
         super(props)
         this.state = {
             data : data,
+            currentStep:1,
             selected : "email"
         }
     }
@@ -22,7 +23,7 @@ class Steps extends Component{
     }
 
     render() {
-        const {data,selected} = this.state
+        const {data,selected,currentStep} = this.state
         const FirstQuestionId = data.StartingQuestionId
         const FirstQuestion = data ? data["Questions"].filter( item => {
             return item.Id === FirstQuestionId
@@ -31,16 +32,14 @@ class Steps extends Component{
         const FirstQuestionAnswers = FirstQuestion.map( question => {
             return question.Answers.filter( answer => answer)
         });
-        console.log(selected)
         
-        
-
         return (
           <React.Fragment>
             <h1>{data.Title}</h1>
             <div dangerouslySetInnerHTML={{ __html: data.Introduction }}></div>
 
-            <StepOne 
+            <StepOne
+                currentStep={currentStep} 
                 questions={FirstQuestion}
                 results={FirstQuestionAnswers[0]}
                 selected={selected}
@@ -54,7 +53,10 @@ class Steps extends Component{
 export default Steps;
 
 
-const StepOne = ({questions, results, selected, handleChange }) => {
+const StepOne = ({currentStep, questions, results, selected, handleChange }) => {
+    if (currentStep !== 1) {
+        return null;
+    }
     return (
       <div className="rich-content">
         <QuestionBlock questions={questions} />

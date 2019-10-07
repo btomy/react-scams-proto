@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 import data from "./scams.json";
-import FormRadioCheck from "./components/FormRadioCheck/component";
-import FormLabel from "./components/FormLabel/component";
-import Step1 from "./components/Steps/Step1.js";
+
+import StepOne from "./components/Steps/StepOne";
+import StepTwo from "./components/Steps/StepTwo";
 import ButtonContainer from "./components/ButtonContainer/ButtonContainer";
 
 class Steps extends Component {
@@ -12,14 +12,16 @@ class Steps extends Component {
     this.state = {
       data: data,
       currentStep: 1,
-      selected: "email"
+      selected: "email",
+      nextStepID : "Q-email"
     };
   }
 
-  _handleChange = e => {
+  _handleChange = (e,l) => {
     e.preventDefault();
     this.setState({
-      selected: e.target.value
+      selected: e.target.value,
+      nextStepID: l.NextStepId
     });
   };
 
@@ -40,7 +42,7 @@ class Steps extends Component {
   };
 
   render() {
-    const { data, selected, currentStep } = this.state;
+    const { data, selected, currentStep, nextStepID } = this.state;
     console.log(this.state);
     const FirstQuestionId = data.StartingQuestionId;
     const FirstQuestion = data
@@ -53,13 +55,20 @@ class Steps extends Component {
       return question.Answers.filter(answer => answer);
     });
 
+    const SecondQuestion = selected ?  data["Questions"].filter( item => {
+        return item.Id === nextStepID
+    }): null;
+    console.log("Second", SecondQuestion);
+    const SecondQuestionAnswers = SecondQuestion && SecondQuestion.map( item => {
+        return item.Answers.filter(answer => answer)
+    })
+
     return (
       <React.Fragment>
         <h1>{data.Title}</h1>
         <div dangerouslySetInnerHTML={{ __html: data.Introduction }}></div>
 
         <form action="" className="rich-content line-limit-width">
-          
           <StepOne
             currentStep={currentStep}
             question={FirstQuestion}
@@ -68,11 +77,20 @@ class Steps extends Component {
             handleChange={this._handleChange}
           />
 
+          <StepTwo
+            currentStep={currentStep}
+            question={SecondQuestion}
+            results={SecondQuestionAnswers[0]}
+            selected={selected}
+            handleChange={this._handleChange}
+          />
+
           <div className="button-group flex pv-4">
-            <ButtonContainer 
-                currentStep={currentStep}
-                next={this._next}
-                previous={this._prev} />
+            <ButtonContainer
+              currentStep={currentStep}
+              next={this._next}
+              previous={this._prev}
+            />
           </div>
         </form>
       </React.Fragment>
@@ -80,54 +98,3 @@ class Steps extends Component {
   }
 }
 export default Steps;
-
-const StepOne = ({currentStep,question,results,selected,handleChange})=> {
-  if (currentStep !== 1) {
-    return null;
-  }
-  return (
-    <React.Fragment>
-      <QuestionBlock question={question} />
-
-      <fieldset className="b-none p-0 m-0 mb-4">
-        <Answers
-          results={results}
-          selected={selected}
-          handleChange={handleChange}
-        />
-      </fieldset>
-    </React.Fragment>
-  );
-};
-
-const QuestionBlock = ({ question }) => {
-  const QuestionBlock = question.map(question => question.QuestionText);
-  return <h3>{QuestionBlock}</h3>;
-};
-
-const Answers = ({ results, selected, handleChange }) => {
-  const resultsBlock = results.map((result, id) => {
-    return (
-      <div className="block mv-2" key={id}>
-        <div className="checkbox">
-          <FormRadioCheck
-            type="checkbox"
-            id={result.AnswerCode}
-            name={result.AnswerCode}
-            value={result.AnswerCode}
-            checked={result.AnswerCode === selected}
-            handleChange={handleChange}
-            classNames="input"
-          />
-          <FormLabel
-            htmlFor={result.AnswerCode}
-            classNames="ml-2 lh-2 semi-bold"
-          >
-            {result.Answer}
-          </FormLabel>
-        </div>
-      </div>
-    );
-  });
-  return <React.Fragment>{resultsBlock}</React.Fragment>;
-};

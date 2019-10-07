@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import MasterForm from "./MasterForm";
 import Steps from "./Steps";
 
 class App extends React.Component {

@@ -3,7 +3,6 @@ import FormRadioCheck from "./components/FormRadioCheck/component";
 import FormLabel from "./components/FormLabel/component";
 
 const Answers = ({ results, selected, handleChange }) => {
-   
     if (!results) {
         return null
     }

@@ -6,7 +6,6 @@ import StepOne from './components/Steps/StepOne';
 import StepTwo from './components/Steps/StepTwo';
 import ShowSummary from './components/Steps/ShowSummary';
 import ButtonContainer from './components/ButtonContainer/ButtonContainer';
-import { log } from 'util';
 
 class Steps extends Component {
   constructor(props) {
@@ -15,28 +14,63 @@ class Steps extends Component {
       data: data,
       currentStep: 1,
       isResult: false,
-      scams: [{ selected: 'phone', nextStepID: 'Q-phone' }]
+      scams: [{selected : null, NextStepId: null }]
     };
   }
 
-  _handleChange = (e, l) => {
-    //const check ="R";
-    // if (l.NextStepId.indexOf(check) !== -1) {
-    //   this.setState({
-    //     showSummary: true,
-    //     selected: e.target.value,
-    //     nextStepID: l.NextStepId
-    //   })
-    //   return;
-    // } else{
-    this.setState({
-      scams: [
-        {
-          selected: e.target.value,
-          nextStepID: l.NextStepId
-        }
-      ]
-    });
+  _addtoArray = (arr, obj) => {
+    const currentObj = obj;
+    let dummyObj = {
+        selected: currentObj.AnswerCode,
+        NextStepId: currentObj.NextStepId
+    }
+    const currentArrLength = arr.length;
+    const { currentStep } = this.state;
+
+    const found = arr.some(el => el.selected === currentObj.selected);
+    
+    if (!found) {
+      arr.push(dummyObj);
+    }
+
+    return arr;
+  };
+
+  _checkIsResult = test => {
+    const check = 'R';
+    let result = false;
+    if (test.NextStepId.indexOf(check) !== -1) {
+      result = true;
+    }
+    return result;
+  };
+
+  _handleChange = (e, data) => {
+    const { currentStep, scams } = this.state;
+    const isResult = this._checkIsResult(data);
+    const scamsArray = this._addtoArray(scams, data);
+    console.log(scamsArray);
+    if (isResult) {
+      this.setState({
+        ...this.state,
+        isResult: true
+      });
+    } else {
+      // if() {
+
+      // } else{
+
+      // }
+
+      this.setState({
+        scams: [
+          {
+            selected: e.target.value,
+            NextStepId: data.NextStepId
+          }
+        ]
+      });
+    }
   };
 
   _next = e => {
@@ -57,33 +91,36 @@ class Steps extends Component {
 
   render() {
     const { data, currentStep, scams, isResult } = this.state;
-    //console.log(scams);
+    console.log('state ', this.state);
+
     const FirstQuestionId = data.StartingQuestionId;
     const FirstQuestion = data
       ? data['Questions'].filter(item => item.Id === FirstQuestionId)
       : null;
+    const OtherQuestion =
+      currentStep > 1
+        ? data['Questions'].filter(item => item.Id === scams[0]['NextStepId'])
+        : null;
 
     const FirstQuestionAnswers = FirstQuestion.map(question => {
       return question.Answers.filter(answer => answer);
     });
-
-    const SecondQuestion = data['Questions'].filter(
-      item => item.Id === scams[0]['nextStepID']
-    );
-    //console.log('Second', SecondQuestion);
-    const SecondQuestionAnswers =
-      SecondQuestion &&
-      SecondQuestion.map(item => {
+    const OtherQuestionAnswers =
+      OtherQuestion &&
+      OtherQuestion.map(item => {
         return item.Answers.filter(answer => answer);
       });
 
-    const summary = data['ResultSummary'].filter(
-      item => item.Id === scams[0]['nextStepID']
-    );
+    // const summary = data['ResultSummary'].filter(
+    //   item => item.Id === scams[0]['NextStepId']
+    // );
     //console.log(summary);
 
-    const Question = (scams.length === 1) ? FirstQuestion : SecondQuestion; 
-    console.log(Question)
+    const Question = currentStep > 1 ? OtherQuestion : FirstQuestion;
+    const Answers =
+      currentStep > 1 ? OtherQuestionAnswers[0] : FirstQuestionAnswers[0];
+    const selected = scams.length > 0 ? scams[0]["selected"] : scams[0]["selected"];
+
     return (
       <React.Fragment>
         <h1>{data.Title}</h1>
@@ -93,8 +130,8 @@ class Steps extends Component {
           <StepOne
             currentStep={currentStep}
             question={Question}
-            results={FirstQuestionAnswers[0]}
-            selected={scams[0]['selected']}
+            results={Answers}
+            selected={scams[0]["selected"]}
             handleChange={this._handleChange}
           />
           {/* <StepTwo

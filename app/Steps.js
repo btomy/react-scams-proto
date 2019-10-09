@@ -14,24 +14,28 @@ class Steps extends Component {
       data: data,
       currentStep: 1,
       isResult: false,
-      scams: [{selected : null, NextStepId: null }]
+      scams: []
     };
   }
 
   _addtoArray = (arr, obj) => {
-    const currentObj = obj;
-    let dummyObj = {
-        selected: currentObj.AnswerCode,
-        NextStepId: currentObj.NextStepId
-    }
     const currentArrLength = arr.length;
     const { currentStep } = this.state;
-
-    const found = arr.some(el => el.selected === currentObj.selected);
+    const found = arr.some(el => el.selected === obj.selected);
     
-    if (!found) {
-      arr.push(dummyObj);
-    }
+    if(currentArrLength == 0) {
+      arr.push({
+       selected: obj.AnswerCode,
+       NextStepId: obj.NextStepId
+     });
+   } else if(!found) {
+     arr.splice(currentStep - 1 , 0, {
+      selected: obj.AnswerCode,
+       NextStepId: obj.NextStepId
+     });
+     arr.pop();
+     //if needed add unshift to take out the first or last item
+   }
 
     return arr;
   };
@@ -48,27 +52,18 @@ class Steps extends Component {
   _handleChange = (e, data) => {
     const { currentStep, scams } = this.state;
     const isResult = this._checkIsResult(data);
+    console.log("isResult ",isResult);
     const scamsArray = this._addtoArray(scams, data);
-    console.log(scamsArray);
+    console.log("Scmas arr",scamsArray);
     if (isResult) {
       this.setState({
         ...this.state,
         isResult: true
       });
     } else {
-      // if() {
-
-      // } else{
-
-      // }
-
       this.setState({
-        scams: [
-          {
-            selected: e.target.value,
-            NextStepId: data.NextStepId
-          }
-        ]
+        ...this.state,
+        scams: scamsArray
       });
     }
   };
@@ -119,7 +114,7 @@ class Steps extends Component {
     const Question = currentStep > 1 ? OtherQuestion : FirstQuestion;
     const Answers =
       currentStep > 1 ? OtherQuestionAnswers[0] : FirstQuestionAnswers[0];
-    const selected = scams.length > 0 ? scams[0]["selected"] : scams[0]["selected"];
+    const selected = scams.length > 0 ? scams[0]["selected"] : null;
 
     return (
       <React.Fragment>
@@ -131,7 +126,7 @@ class Steps extends Component {
             currentStep={currentStep}
             question={Question}
             results={Answers}
-            selected={scams[0]["selected"]}
+            selected={selected}
             handleChange={this._handleChange}
           />
           {/* <StepTwo

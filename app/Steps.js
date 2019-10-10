@@ -14,7 +14,8 @@ class Steps extends Component {
       data: data,
       currentStep: 1,
       isResult: false,
-      scams: []
+      currentSelection: null,
+      scamsHistory: []
     };
   }
 
@@ -22,20 +23,26 @@ class Steps extends Component {
     const currentArrLength = arr.length;
     const { currentStep } = this.state;
     const found = arr.some(el => el.selected === obj.selected);
-    
-    if(currentArrLength == 0) {
+
+    if (currentArrLength == 0) {
       arr.push({
-       selected: obj.AnswerCode,
-       NextStepId: obj.NextStepId
-     });
-   } else if(!found) {
-     arr.splice(currentStep - 1 , 0, {
-      selected: obj.AnswerCode,
-       NextStepId: obj.NextStepId
-     });
-     arr.pop();
-     //if needed add unshift to take out the first or last item
-   }
+        selected: obj.AnswerCode,
+        NextStepId: obj.NextStepId
+      });
+    } else if (!found) {
+      if (currentStep == currentArrLength) {
+        arr.unshift({
+          selected: obj.AnswerCode,
+          NextStepId: obj.NextStepId
+        });
+        arr.pop();
+      } else {
+        arr.push({
+          selected: obj.AnswerCode,
+          NextStepId: obj.NextStepId
+        });
+      }
+    }
 
     return arr;
   };
@@ -50,27 +57,28 @@ class Steps extends Component {
   };
 
   _handleChange = (e, data) => {
-    const { currentStep, scams } = this.state;
-    const isResult = this._checkIsResult(data);
-    console.log("isResult ",isResult);
-    const scamsArray = this._addtoArray(scams, data);
-    console.log("Scmas arr",scamsArray);
-    if (isResult) {
-      this.setState({
-        ...this.state,
-        isResult: true
-      });
-    } else {
-      this.setState({
-        ...this.state,
-        scams: scamsArray
-      });
-    }
+    const { currentStep, scamsHistory } = this.state;
+    //const isResult = this._checkIsResult(data);
+    console.log('data ', data);
+    //const scamsArray = this._addtoArray(scams, data);
+    this.setState({
+      ...this.state,
+      currentSelection: {
+        AnswerCode: data.AnswerCode,
+        NextStepId: data.NextStepId
+      }
+    });
+    // if (isResult) {
+    //   this.setState({
+    //     ...this.state,
+    //     isResult: true
+    //   });
+    // }
   };
 
   _next = e => {
     let currentStep = this.state.currentStep;
-    currentStep = currentStep >= 5 ? 3 : currentStep + 1;
+    currentStep = currentStep + 1;
     this.setState({
       currentStep: currentStep
     });
@@ -78,14 +86,14 @@ class Steps extends Component {
 
   _prev = e => {
     let currentStep = this.state.currentStep;
-    currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+    currentStep = currentStep - 1;
     this.setState({
       currentStep: currentStep
     });
   };
 
   render() {
-    const { data, currentStep, scams, isResult } = this.state;
+    const { data, currentStep, scamsHistory, isResult ,currentSelection } = this.state;
     console.log('state ', this.state);
 
     const FirstQuestionId = data.StartingQuestionId;
@@ -94,7 +102,9 @@ class Steps extends Component {
       : null;
     const OtherQuestion =
       currentStep > 1
-        ? data['Questions'].filter(item => item.Id === scams[0]['NextStepId'])
+        ? data['Questions'].filter(
+            item => item.Id === scamsHistory[0]['NextStepId']
+          )
         : null;
 
     const FirstQuestionAnswers = FirstQuestion.map(question => {
@@ -106,15 +116,14 @@ class Steps extends Component {
         return item.Answers.filter(answer => answer);
       });
 
-    // const summary = data['ResultSummary'].filter(
-    //   item => item.Id === scams[0]['NextStepId']
-    // );
-    //console.log(summary);
+    // const summary = isResult ? data['ResultSummary'].filter(
+    //   item => item.Id === scams[currentStep]['NextStepId']
+    // ): null;
+    // console.log(summary);
 
     const Question = currentStep > 1 ? OtherQuestion : FirstQuestion;
     const Answers =
       currentStep > 1 ? OtherQuestionAnswers[0] : FirstQuestionAnswers[0];
-    const selected = scams.length > 0 ? scams[0]["selected"] : null;
 
     return (
       <React.Fragment>
@@ -124,9 +133,11 @@ class Steps extends Component {
         <form action="" className="rich-content line-limit-width">
           <StepOne
             currentStep={currentStep}
+            isResult={isResult}
+            summary={'summary'}
             question={Question}
             results={Answers}
-            selected={selected}
+            currentSelection={currentSelection}
             handleChange={this._handleChange}
           />
           {/* <StepTwo

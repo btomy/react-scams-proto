@@ -59,7 +59,7 @@ class Steps extends Component {
   _handleChange = (e, data) => {
     const { currentStep, scamsHistory } = this.state;
     //const isResult = this._checkIsResult(data);
-    console.log('data ', data);
+    //console.log('data ', data);
     //const scamsArray = this._addtoArray(scams, data);
     this.setState({
       ...this.state,
@@ -77,23 +77,37 @@ class Steps extends Component {
   };
 
   _next = e => {
+    const { currentSelection ,scamsHistory } = this.state;
     let currentStep = this.state.currentStep;
     currentStep = currentStep + 1;
-    this.setState({
-      currentStep: currentStep
-    });
+    //check if anything exist in currentSelection else
+    if (currentSelection) {
+      this.setState({
+        currentStep: currentStep,
+        scamsHistory: [...scamsHistory, currentSelection]
+      });
+    } else {
+      //show validation
+    }
   };
 
   _prev = e => {
+    const { currentSelection ,scamsHistory } = this.state;
     let currentStep = this.state.currentStep;
     currentStep = currentStep - 1;
+    console.log("Hist",scamsHistory)
     this.setState({
-      currentStep: currentStep
+      ...this.state,
+      currentStep: currentStep,
+      currentSelection: {
+        AnswerCode: scamsHistory[currentStep - 1].AnswerCode,
+        NextStepId: scamsHistory[currentStep - 1].NextStepId
+      },
     });
   };
 
   render() {
-    const { data, currentStep, scamsHistory, isResult ,currentSelection } = this.state;
+    const { data,currentStep,scamsHistory,isResult,currentSelection } = this.state;
     console.log('state ', this.state);
 
     const FirstQuestionId = data.StartingQuestionId;

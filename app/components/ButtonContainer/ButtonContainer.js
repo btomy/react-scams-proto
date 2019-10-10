@@ -8,7 +8,7 @@ class ButtonContainer extends Component {
 
   get previousButton() {
     let currentStep = this.props.currentStep;
-    if (currentStep !== 1) {
+    if (currentStep >= 1) {
       return (
         <Button className="button-secondary mr-2" click={this.props.previous}>
           <svg

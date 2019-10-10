@@ -12,7 +12,7 @@ class Steps extends Component {
     super(props);
     this.state = {
       data: data,
-      currentStep: 1,
+      currentStep: 0,
       isResult: false,
       currentSelection: null,
       scamsHistory: []
@@ -68,20 +68,21 @@ class Steps extends Component {
         NextStepId: data.NextStepId
       }
     });
-    // if (isResult) {
-    //   this.setState({
-    //     ...this.state,
-    //     isResult: true
-    //   });
-    // }
+    
   };
 
   _next = e => {
     const { currentSelection ,scamsHistory } = this.state;
-    let currentStep = this.state.currentStep;
-    currentStep = currentStep + 1;
+    let currentStep = this.state.currentStep + 1;
+    const isResult = currentStep > 1 ? this._checkIsResult(currentSelection): null;
     //check if anything exist in currentSelection else
-    if (currentSelection) {
+    
+    if (isResult) {
+      this.setState({
+        ...this.state,
+        isResult: true
+      });
+    } else if (currentSelection) {
       this.setState({
         currentStep: currentStep,
         scamsHistory: [...scamsHistory, currentSelection]
@@ -93,15 +94,14 @@ class Steps extends Component {
 
   _prev = e => {
     const { currentSelection ,scamsHistory } = this.state;
-    let currentStep = this.state.currentStep;
-    currentStep = currentStep - 1;
+    let currentStep = this.state.currentStep  - 1;
     console.log("Hist",scamsHistory)
     this.setState({
       ...this.state,
       currentStep: currentStep,
       currentSelection: {
-        AnswerCode: scamsHistory[currentStep - 1].AnswerCode,
-        NextStepId: scamsHistory[currentStep - 1].NextStepId
+        AnswerCode: scamsHistory[currentStep].AnswerCode,
+        NextStepId: scamsHistory[currentStep].NextStepId
       },
     });
   };
@@ -115,9 +115,9 @@ class Steps extends Component {
       ? data['Questions'].filter(item => item.Id === FirstQuestionId)
       : null;
     const OtherQuestion =
-      currentStep > 1
+      currentStep > 0
         ? data['Questions'].filter(
-            item => item.Id === scamsHistory[0]['NextStepId']
+            item => item.Id === scamsHistory[currentStep - 1]['NextStepId']
           )
         : null;
 
@@ -135,9 +135,9 @@ class Steps extends Component {
     // ): null;
     // console.log(summary);
 
-    const Question = currentStep > 1 ? OtherQuestion : FirstQuestion;
+    const Question = currentStep > 0 ? OtherQuestion : FirstQuestion;
     const Answers =
-      currentStep > 1 ? OtherQuestionAnswers[0] : FirstQuestionAnswers[0];
+      currentStep > 0 ? OtherQuestionAnswers[0] : FirstQuestionAnswers[0];
 
     return (
       <React.Fragment>

@@ -19,6 +19,12 @@ class Steps extends Component {
     };
   }
 
+  removeDuplicates = (array, key) => {
+    return array.filter(
+      (obj, index, self) => index === self.findIndex(el => el[key] === obj[key])
+    );
+  };
+
   _addtoArray = (arr, obj) => {
     const currentArrLength = arr.length;
     const { currentStep } = this.state;
@@ -48,7 +54,7 @@ class Steps extends Component {
   };
 
   _checkIsResult = test => {
-    const check = 'R';
+    const check = "R";
     let result = false;
     if (test.NextStepId.indexOf(check) !== -1) {
       result = true;
@@ -68,15 +74,15 @@ class Steps extends Component {
         NextStepId: data.NextStepId
       }
     });
-    
   };
 
   _next = e => {
-    const { currentSelection ,scamsHistory } = this.state;
+    const { currentSelection, scamsHistory } = this.state;
     let currentStep = this.state.currentStep + 1;
-    const isResult = currentStep > 1 ? this._checkIsResult(currentSelection): null;
+    const isResult =
+      currentStep > 1 ? this._checkIsResult(currentSelection) : null;
     //check if anything exist in currentSelection else
-    
+
     if (isResult) {
       this.setState({
         ...this.state,
@@ -93,31 +99,37 @@ class Steps extends Component {
   };
 
   _prev = e => {
-    const { currentSelection ,scamsHistory } = this.state;
-    let currentStep = this.state.currentStep  - 1;
-    console.log("Hist",scamsHistory)
+    const { currentSelection, scamsHistory } = this.state;
+    let currentStep = this.state.currentStep - 1;
+    console.log("Hist", scamsHistory);
     this.setState({
       ...this.state,
       currentStep: currentStep,
       currentSelection: {
         AnswerCode: scamsHistory[currentStep].AnswerCode,
         NextStepId: scamsHistory[currentStep].NextStepId
-      },
+      }
     });
   };
 
   render() {
-    const { data,currentStep,scamsHistory,isResult,currentSelection } = this.state;
-    console.log('state ', this.state);
+    const {
+      data,
+      currentStep,
+      scamsHistory,
+      isResult,
+      currentSelection
+    } = this.state;
+    console.log("state ", this.state);
 
     const FirstQuestionId = data.StartingQuestionId;
     const FirstQuestion = data
-      ? data['Questions'].filter(item => item.Id === FirstQuestionId)
+      ? data["Questions"].filter(item => item.Id === FirstQuestionId)
       : null;
     const OtherQuestion =
       currentStep > 0
-        ? data['Questions'].filter(
-            item => item.Id === scamsHistory[currentStep - 1]['NextStepId']
+        ? data["Questions"].filter(
+            item => item.Id === scamsHistory[currentStep - 1]["NextStepId"]
           )
         : null;
 
@@ -148,7 +160,7 @@ class Steps extends Component {
           <StepOne
             currentStep={currentStep}
             isResult={isResult}
-            summary={'summary'}
+            summary={"summary"}
             question={Question}
             results={Answers}
             currentSelection={currentSelection}
